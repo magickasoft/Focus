@@ -11,6 +11,9 @@ import {
     Animated
 } from 'react-native'
 
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+
 import NavBar, { NavGroup, NavButton, NavButtonText, NavTitle } from 'react-native-nav'
 // const { RNMixpanel: Mixpanel } = NativeModules
 
@@ -37,7 +40,7 @@ import NavTitles from '../IntroNav/NavTitle'
 
 
 
-export default class FeedItem extends React.Component {
+class FeedItem extends React.Component {
 
     constructor(props){
         super(props);
@@ -379,9 +382,11 @@ export default class FeedItem extends React.Component {
     }
 
     renderView = () => {
-        const { width, navigator, unauthenticatedAction, trackingSource, item, visibleParent } = this.props
+        // const { width, navigator, unauthenticatedAction, trackingSource, item, visibleParent } = this.props
         // const content = this._renderItem({ item, width, height: 0.75 * width, visibleParent })
 
+        const { data: { loading, usersList } } = this.props;
+        console.log('~~~~ Apollo usersList', this.props.data);
         return (
           <View style={styles.view}>
             <NavigationBar
@@ -391,7 +396,16 @@ export default class FeedItem extends React.Component {
                 title={this._title()}
                 style={styles.navBar}/>
 
-            <Text>fgdfg</Text>
+            { loading ? <Text style={styles.header}>{'Loading'}</Text>
+                :
+                usersList ?
+                usersList.map(user => (
+                    <View key={user.id} >
+                            <Text style={styles.header}>{user.name}</Text>
+                    </View>
+                )) : <Text style={styles.header}>{'None'}</Text>
+
+            }
           </View>
         )
     }
@@ -402,7 +416,8 @@ export default class FeedItem extends React.Component {
 }
 
 const styles = {
-
+    wrapper: { height: 40, marginBottom: 15, flex: 1, flexDirection: 'row' },
+    header: { fontSize: 20, color:'#fff' },
     navBar: {
         backgroundColor: '#1f1b20'
     },
@@ -625,3 +640,16 @@ const styles = {
         right: 10
     }
 }
+
+export default graphql(gql`
+  query allUsers {
+    usersList {
+      id,
+      name,
+      friends {
+        id,
+        name
+      }
+    }
+  }
+`)(FeedItem);
