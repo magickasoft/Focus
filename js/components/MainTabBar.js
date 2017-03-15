@@ -129,7 +129,7 @@ export default class MainTabBar extends React.Component {
         //this.setState({verticalLine:false},()=>console.log(this.state.verticalLine))
         // this._drawer.close()
         closeDrawer();
-        setDrawerData({leftLineShown:false});
+        // setDrawerData({leftLineShown:false});
         // this.setState({leftLineShown:false})
     };
     openControlPanel = () => {
@@ -340,6 +340,7 @@ export default class MainTabBar extends React.Component {
                         })}
                     styles={drawer.styles}
                     //onClose={this.onHideLine.bind(this)}
+                    onClose={this.closeControlPanel.bind(this)}
                     //onOpenStart={() => {setDrawerData({leftLineShown:true, opacityLine: 0.7})}}
                 >
                     <CustomNavigationCardStack
