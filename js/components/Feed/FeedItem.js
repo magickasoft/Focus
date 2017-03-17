@@ -8,9 +8,12 @@ import {
     Dimensions,
     WebView,
     NativeModules,
-    Animated
+    Animated,
+    Button,
 } from 'react-native'
 
+import apolloClient from  '../../../js/apolloConfig'
+import { allUsers } from '../../queries/index'
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -38,6 +41,7 @@ import ForwardButton from '../IntroNav/ForwardButton'
 import ImageButton from '../IntroNav/ImageButton'
 import NavTitles from '../IntroNav/NavTitle'
 
+// import Button from 'react-native-button'
 
 
 class FeedItem extends React.Component {
@@ -380,13 +384,31 @@ class FeedItem extends React.Component {
             </InViewPort>
         )
     }
-
+    onButtonPress () {
+        const { data } = this.props;
+        console.log('~~~~~ onButtonPress data', this.props);
+        console.log('~~~~~ apolloClient', apolloClient);
+        // data.refetch();
+        // apolloClient.query({
+        //     query: allUsers,
+        //     variables: {},
+        // });
+        // apolloClient.query({
+        //     query: gql`
+        //       query hello {
+        //         hello
+        //       }
+        //       `,
+        //     variables: {},
+        // })
+    }
     renderView = () => {
         // const { width, navigator, unauthenticatedAction, trackingSource, item, visibleParent } = this.props
         // const content = this._renderItem({ item, width, height: 0.75 * width, visibleParent })
 
-        const { data: { loading, usersList } } = this.props;
-        console.log('~~~~ Apollo usersList', this.props.data);
+        const { data } = this.props;
+       // const { loading, usersList } = data;
+        console.log('f~~~data', this.props)
         return (
           <View style={styles.view}>
             <NavigationBar
@@ -396,14 +418,22 @@ class FeedItem extends React.Component {
                 title={this._title()}
                 style={styles.navBar}/>
 
-            { loading ? <Text style={styles.header}>{'Loading'}</Text>
+              <Button
+                  onPress={this.onButtonPress.bind(this)}
+                  title="Ok!"
+                  color="#841584"
+                  accessibilityLabel="Ok!"
+              />
+
+            { data ? data.loading !== 'undefined'  ? <Text style={styles.header}>{'Loading'}</Text>
                 :
-                usersList ?
-                usersList.map(user => (
+                data.usersList ?
+                data.usersList.map(user => (
                     <View key={user.id} >
                             <Text style={styles.header}>{user.name}</Text>
                     </View>
                 )) : <Text style={styles.header}>{'None'}</Text>
+                : <Text style={styles.header}>{'None data'}</Text>
 
             }
           </View>
@@ -641,15 +671,16 @@ const styles = {
     }
 }
 
-export default graphql(gql`
-  query allUsers {
-    usersList {
-      id,
-      name,
-      friends {
-        id,
-        name
-      }
-    }
-  }
-`)(FeedItem);
+// export default graphql(gql`
+//   query allUsers1{
+//     usersList {
+//       id,
+//       name
+//       friends {
+//         id,
+//       }
+//     }
+//   }
+// `)(FeedItem);
+
+export default FeedItem ;

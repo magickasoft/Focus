@@ -11,7 +11,7 @@ function stateToProps(state) {
 }
 
 function dispatchToProps(dispatch) {
-    let actions = _.extend({}, drawerActions,  { clapitLogout, verifyDeviceToken })
+    let actions = _.extend({}, {...drawerActions},  { clapitLogout, verifyDeviceToken })
 
     return bindActionCreators(actions, dispatch)
 }

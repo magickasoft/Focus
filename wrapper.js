@@ -5,11 +5,11 @@ import { applyMiddleware, createStore, combineReducers,  compose } from 'redux'
 import { composeWithDevTools } from 'remote-redux-devtools'
 import { persistStore, autoRehydrate } from 'redux-persist'
 import { Provider } from 'react-redux'
-import ApolloClient, { createNetworkInterface } from 'apollo-client';
+
 import { ApolloProvider } from 'react-apollo';
 import createLogger from 'redux-logger'
 import thunk from 'redux-thunk'
-// import rootReducer from './js/reducers'
+import rootReducer from './js/reducers'
 // import * as rootReducer from './js/reducers'
 import App from './js/app'
 
@@ -21,9 +21,8 @@ import { clapitAccountData } from './js/reducers/clapit'
 import { drawer } from './js/reducers/drawer'
 import { navigationState } from './js/reducers/navigation'
 
-const client = new ApolloClient({
-    networkInterface: createNetworkInterface({ uri: 'http://192.168.0.12:8080/graphql' }),
-});
+import apolloClient from  './js/apolloConfig'
+
 //     client.query({ query: gql`
 //   query allUsers {
 //     usersList {
@@ -37,12 +36,12 @@ const client = new ApolloClient({
 //   }
 // ` });
 const wrapper = (props) => {
-    console.log('~~wrapper props', props);
+    //console.log('~~wrapper props', props);
 
     let middlewareApplied;
     const logger = createLogger();
 
-    middlewareApplied = applyMiddleware(client.middleware(), thunk, logger);
+    middlewareApplied = applyMiddleware(apolloClient.middleware(), thunk, logger);
 
     const composeEnhancers = composeWithDevTools({
         name: Platform.OS, realtime: true,
@@ -50,13 +49,7 @@ const wrapper = (props) => {
         autoReconnect: true,
     });
 
-    const store = createStore(combineReducers({
-      apollo: client.reducer(),
-        autoRehydrated,
-        clapitAccountData,
-        drawer,
-        navigationState,
-    }),// {},
+    const store = createStore(rootReducer, // {},
     //compose(
     composeEnhancers(
       autoRehydrate(),
@@ -69,7 +62,7 @@ const wrapper = (props) => {
     }).purge([]);
 
     return (
-        <ApolloProvider store={store} client={client}>
+        <ApolloProvider store={store} client={apolloClient}>
           <App />
         </ApolloProvider>
     )

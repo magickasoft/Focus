@@ -12,8 +12,9 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 
-import { navigationPush, navigationPop, navigationReplace, onNavigate } from './actions/navigation'
-
+import * as navigationActions  from './actions/navigation'
+import { graphql } from 'react-apollo'
+import { allUsers } from './queries/index'
 
 // import Login from './components/IntroNav/Login'
 import MainContainer from './containers/MainContainer'
@@ -113,7 +114,7 @@ class App extends React.Component {
 
 
     render() {
-        let {
+        const {
           autoRehydrated,
           navigationState,
           navigationPush,
@@ -144,9 +145,7 @@ const stateToProps = (state) => {
 };
 
 const dispatchToProps = (dispatch) => {
-    return bindActionCreators(_.extend({}, {
-        navigationPop, navigationPush, navigationReplace, onNavigate
-    }), dispatch)
+    return bindActionCreators(_.extend({}, {...navigationActions}), dispatch)
 };
 
 export default connect(stateToProps, dispatchToProps)(App)

@@ -280,7 +280,7 @@ export default class MainTabBar extends React.Component {
 
     render() {
         const { drawer, setDrawerData } = this.props;
-        console.log('~~~~~drawer', drawer);
+        // console.log('~~~~~drawer', drawer);
         const tabData = [
             {
                 name: First_TAB,
