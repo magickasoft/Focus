@@ -58,7 +58,7 @@ const wrapper = (props) => {
     ));
     persistStore(store, {
       storage: AsyncStorage,
-      whitelist: [/*'apollo'*/,'autoRehydrated','clapitAccountData','drawer','navigationState','newNotifications', 'preferences',]
+      whitelist: [/*'apollo'*/,'autoRehydrated','clapitAccountData','drawer', 'navigationState', 'newNotifications', 'preferences',]
     }).purge([]);
 
     return (

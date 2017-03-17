@@ -24,14 +24,38 @@ let { width, height } = Dimensions.get('window')
 export default class ControlPanel extends Component {
     constructor(props) {
         super(props);
+
+        const { navigationPush, navigationPop, navigationReplace } = props;
         this.state = {
         };
+
+        // for time's sake, converting from navigator.push to navigationPush
+        this.navigator = {
+            push: (data, staticState = false) => {
+                const { name, ...otherData } = data;
+                const key = name + (staticState ? '' : ('-' + new Date().getTime()));
+                navigationPush({ key, name, ...otherData })
+            },
+            pop: () => {
+                navigationPop()
+            },
+            replace: (data, staticState = false) => {
+                let { name, ...otherData } = data;
+                const key = name + (staticState ? '' : ('-' + new Date().getTime()));
+                navigationReplace({ key, ...otherData })
+            }
+        }
     }
 
     onWebViewPage(details){
 
     }
-    
+
+    onPushPage(obg){
+      const { closeDrawer } = this.props;
+      closeDrawer();
+      this.navigator.push(obg, true)
+    }
     onLogOut() {
 
     }
@@ -67,22 +91,22 @@ export default class ControlPanel extends Component {
                 <ScrollView style={styles.menu} contentContainerStyle={{justifyContent:'space-between'}}>
                     <MenuItem //imageItemSource={require('../images/icon/dashboard.png')}
                               textItem='Schedule'
-                              onPressItem={()=>this.onWebViewPage('dashboard')}/>
+                              onPressItem={this.onPushPage.bind(this,{ name: 'TestPage'})}/>
                     <MenuItem //imageItemSource={require('../images/icon/account.png')}
                               textItem='Accounts'
-                              onPressItem={()=>this.onWebViewPage('account')}/>
+                              onPressItem={()=>this.onWebViewPage.bind(this,'account')}/>
                     <MenuItem //imageItemSource={require('../images/icon/fitness.png')}
                               textItem='Media'
-                              onPressItem={()=>this.onWebViewPage('fitness')}/>
+                              onPressItem={()=>this.onWebViewPage.bind(this,'fitness')}/>
                     <MenuItem //imageItemSource={require('../images/icon/mind.png')}
                               textItem='Notifications'
-                              onPressItem={()=>this.onWebViewPage('mind')}/>
+                              onPressItem={()=>this.onWebViewPage.bind(this,'mind')}/>
                     <MenuItem //imageItemSource={require('../images/icon/place.png')}
                               textItem='Settings'
-                              onPressItem={()=>this.onWebViewPage('social')}/>
+                              onPressItem={()=>this.onWebViewPage.bind(this,'social')}/>
                     <MenuItem //imageItemSource={require('../images/icon/social.png')}
                               textItem='My profile'
-                              onPressItem={()=>this.onWebViewPage('place')}/>
+                              onPressItem={()=>this.onWebViewPage.bind(this,'place')}/>
                     <MenuItem //imageItemSource={require('../images/icon/logout.png')}
                               textItem='Logout'
                               onPressItem={()=>this.onLogOut()}/>

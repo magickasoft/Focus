@@ -364,13 +364,13 @@ class FeedItem extends React.Component {
     }
     _onPressMenu() {
         const { navigator, parentNavigator, parentPop, setDrawerData, openDrawer } = this.props
-        console.log('~~~~this.props',this.props);
+        //console.log('~~~~this.props',this.props);
         //setDrawerData({open: true});
         openDrawer();
         // navigator.pop()
-        if (parentPop){
-            //parentNavigator.pop()
-        }
+        // if (parentPop){
+        //   parentNavigator.pop()
+        // }
     }
     _renderPost = () => {
         const { width, navigator, unauthenticatedAction, trackingSource, item, visibleParent } = this.props
@@ -386,8 +386,7 @@ class FeedItem extends React.Component {
     }
     onButtonPress () {
         const { data } = this.props;
-        console.log('~~~~~ onButtonPress data', this.props);
-        console.log('~~~~~ apolloClient', apolloClient);
+        console.log('~~~~~ onButtonPress FreedItem', this.props);
         // data.refetch();
         // apolloClient.query({
         //     query: allUsers,
@@ -408,7 +407,7 @@ class FeedItem extends React.Component {
 
         const { data } = this.props;
        // const { loading, usersList } = data;
-        console.log('f~~~data', this.props)
+        //console.log('FEEDITEM~~~data', this.props)
         return (
           <View style={styles.view}>
             <NavigationBar

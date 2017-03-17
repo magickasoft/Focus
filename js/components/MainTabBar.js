@@ -27,7 +27,7 @@ import {
 import Tabs from 'react-native-tabs'
 import Drawer from 'react-native-drawer'
 import ControlPanel from './ControlPanel'
-
+import ControlPanelContainer from '../containers/ControlPanelContainer'
 import { Colors } from '../themes'
 
 import First_tabContainer from '../containers/First_tabContainer'
@@ -280,7 +280,7 @@ export default class MainTabBar extends React.Component {
 
     render() {
         const { drawer, setDrawerData } = this.props;
-        // console.log('~~~~~drawer', drawer);
+        //console.log('~~~~~drawer', this.props);
         const tabData = [
             {
                 name: First_TAB,
@@ -324,7 +324,8 @@ export default class MainTabBar extends React.Component {
             <View style={styles.container}>
                 <Drawer
                     // ref={(ref) => this._drawer = ref}
-                    content={<ControlPanel navigator={this.props.navigator}/>}
+                    //content={<ControlPanel />}
+                    content={<ControlPanelContainer/>}
                     type={drawer.type}
                     open={drawer.open}
                     //type="static"

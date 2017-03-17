@@ -13,14 +13,14 @@ import  {
 } from 'react-native'
 import _ from 'lodash'
 import NavigationBar from 'react-native-navbar'
-import BackButton from './BackButton'
-import NavTitle from './NavTitle'
+import BackButton from './IntroNav/BackButton'
+import NavTitle from './IntroNav/NavTitle'
 
 // import ClapitLoading from '../ClapitLoading'
 
 const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-export default class Login extends Component {
+export default class TestPage extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -208,6 +208,7 @@ export default class Login extends Component {
                 <View style={styles.bodyView}>
                     <ScrollView ref='scrollView' style={styles.scrollView} contentContainerStyle={{paddingBottom: 125}}>
                         <View style={styles.upperView}>
+                            <Text>dsfsdf</Text>
                             <View style={styles.descriptionView}>
                                 <View style={[styles.lineView, {marginLeft:20, marginRight:20}]}></View>
                                 <Text style={styles.actionText}>{actionText} with e-mail</Text>
