@@ -2,12 +2,13 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 import ControlPanel from '../components/ControlPanel'
-import { allUsers } from '../queries/index'
+import { allUsers, hello} from '../queries/index'
 
 import * as drawerActions from '../actions/drawer'
 import * as navigationActions  from '../actions/navigation'
 
-const ControlPanelbWithQuery =  graphql(allUsers)(ControlPanel);
+const ControlPanelbWithQuery =  graphql(hello)(ControlPanel);
+
 
 function stateToProps(state) {
     const { navigationState, drawer } = state;

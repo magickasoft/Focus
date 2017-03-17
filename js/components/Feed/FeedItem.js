@@ -406,8 +406,8 @@ class FeedItem extends React.Component {
         // const content = this._renderItem({ item, width, height: 0.75 * width, visibleParent })
 
         const { data } = this.props;
-       // const { loading, usersList } = data;
-        //console.log('FEEDITEM~~~data', this.props)
+        //const { loading, usersList } = data;
+        console.log('FEEDITEM~~~data', this.props)
         return (
           <View style={styles.view}>
             <NavigationBar
@@ -424,7 +424,7 @@ class FeedItem extends React.Component {
                   accessibilityLabel="Ok!"
               />
 
-            { data ? data.loading !== 'undefined'  ? <Text style={styles.header}>{'Loading'}</Text>
+            { data ? data.loading ? <Text style={styles.header}>{'Loading'}</Text>
                 :
                 data.usersList ?
                 data.usersList.map(user => (

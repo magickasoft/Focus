@@ -2,12 +2,14 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 import TestPage from '../components/TestPage'
-import { allUsers } from '../queries/index'
+import { allUsers, hello, getUserById} from '../queries/index'
 
 import * as drawerActions from '../actions/drawer'
 import * as navigationActions  from '../actions/navigation'
 
-const ControlPanelbWithQuery =  graphql(allUsers)(TestPage);
+const TestPageWithQuery =  graphql(getUserById, {
+    options: ({ uid }) => ({ variables: { uid: uid ? uid : '559645cd1a38532d14349242'} }),
+})(TestPage);
 
 function stateToProps(state) {
     const { navigationState, drawer } = state;
@@ -20,4 +22,4 @@ function dispatchToProps(dispatch) {
     return bindActionCreators(actions, dispatch)
 }
 
-export default connect(stateToProps, dispatchToProps)(TestPage)
+export default connect(stateToProps, dispatchToProps)(TestPageWithQuery)

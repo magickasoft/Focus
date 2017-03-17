@@ -17,7 +17,7 @@ import { graphql } from 'react-apollo'
 import { allUsers } from './queries/index'
 
 import Login from './components/IntroNav/Login'
-import TestPage from './components/TestPage'
+import TestPageContainer from './containers/TestPageContainer'
 import MainContainer from './containers/MainContainer'
 import IntroNavContainer from './containers/IntroNavContainer'
 
@@ -105,9 +105,9 @@ class App extends React.Component {
             case 'Login':
                 return (
                     <Login signUp completeNavigationState={completeNavigationState} parentNavigator={this.navigator}/>);
-            case 'TestPage':
+            case 'TestPageContainer':
                 return (
-                    <TestPage signUp completeNavigationState={completeNavigationState} parentNavigator={this.navigator}/>);
+                    <TestPageContainer signUp completeNavigationState={completeNavigationState} parentNavigator={this.navigator}/>);
         }
     }
 

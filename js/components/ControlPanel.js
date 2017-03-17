@@ -91,7 +91,7 @@ export default class ControlPanel extends Component {
                 <ScrollView style={styles.menu} contentContainerStyle={{justifyContent:'space-between'}}>
                     <MenuItem //imageItemSource={require('../images/icon/dashboard.png')}
                               textItem='Schedule'
-                              onPressItem={this.onPushPage.bind(this,{ name: 'TestPage'})}/>
+                              onPressItem={this.onPushPage.bind(this,{ name: 'TestPageContainer'})}/>
                     <MenuItem //imageItemSource={require('../images/icon/account.png')}
                               textItem='Accounts'
                               onPressItem={()=>this.onWebViewPage.bind(this,'account')}/>

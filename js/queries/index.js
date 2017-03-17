@@ -5,7 +5,7 @@ import gql from 'graphql-tag'
 
 
 export const allUsers = gql`
-  query allUsers5 {
+  query allUsers {
     usersList {
       id,
       name,
@@ -14,5 +14,25 @@ export const allUsers = gql`
         name
       }
     }
+    hello
   }
+`;
+export const getUserById = gql`
+  query getUserById($uid: String!) {
+    user(id: $uid) {
+      id
+      name
+      friends {
+        id
+        name
+      }
+    }
+  }
+`;
+export const hello = gql`
+  query hello {
+    hello
+
+  }
+  
 `;

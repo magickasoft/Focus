@@ -201,7 +201,7 @@ export default class TestPage extends Component {
             toggleText = 'SIGN IN'
             questionText = 'Already have an account? '
         }
-
+           console.log('~~~ testPage render', this.props.data);
         return (
             <View style={styles.view}>
                 <NavigationBar leftButton={this._leftButton()} title={this._title()} style={styles.navBar}/>
