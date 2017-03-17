@@ -3,6 +3,7 @@ import {
     View,
     Text,
     Image,
+    ScrollView,
     TouchableOpacity,
     TouchableWithoutFeedback,
     Dimensions,
@@ -48,9 +49,27 @@ class FeedItem extends React.Component {
 
     constructor(props){
         super(props);
+
+        const { navigationPush, navigationPop, navigationReplace } = props;
         this.state = {
             anim : new Animated.Value(0),
             showFlashOverlay: false
+        };
+        // for time's sake, converting from navigator.push to navigationPush
+        this.navigator = {
+            push: (data, staticState = false) => {
+                const { name, ...otherData } = data;
+                const key = name + (staticState ? '' : ('-' + new Date().getTime()));
+                navigationPush({ key, name, ...otherData })
+            },
+            pop: () => {
+                navigationPop()
+            },
+            replace: (data, staticState = false) => {
+                let { name, ...otherData } = data;
+                const key = name + (staticState ? '' : ('-' + new Date().getTime()));
+                navigationReplace({ key, ...otherData })
+            }
         }
     }
 
@@ -387,7 +406,7 @@ class FeedItem extends React.Component {
     onButtonPress () {
         const { data } = this.props;
         console.log('~~~~~ onButtonPress FreedItem', this.props);
-        // data.refetch();
+        data.refetch();
         // apolloClient.query({
         //     query: allUsers,
         //     variables: {},
@@ -401,13 +420,17 @@ class FeedItem extends React.Component {
         //     variables: {},
         // })
     }
+    onPushPage (object) {
+
+      this.navigator.push(object, true);
+    }
     renderView = () => {
         // const { width, navigator, unauthenticatedAction, trackingSource, item, visibleParent } = this.props
         // const content = this._renderItem({ item, width, height: 0.75 * width, visibleParent })
 
         const { data } = this.props;
         //const { loading, usersList } = data;
-        console.log('FEEDITEM~~~data', this.props)
+        // console.log('FEEDITEM~~~data', this.props)
         return (
           <View style={styles.view}>
             <NavigationBar
@@ -415,26 +438,31 @@ class FeedItem extends React.Component {
                 leftButton={this._leftButton()}
                 rightButton={this._rightButton()}
                 title={this._title()}
-                style={styles.navBar}/>
+                style={styles.navBar} />
+              <View style={styles.bodyView}>
+                  <ScrollView ref='scrollView' style={styles.scrollView} contentContainerStyle={{paddingBottom: 15}}>
+                      <Button
+                          onPress={this.onButtonPress.bind(this)}
+                          title="Ok!"
+                          color="#841584"
+                          accessibilityLabel="Ok!"
+                      />
+                      { data ? data.loading ? <Text style={styles.header}>{'Loading'}</Text>
+                              :
+                              data.usersList ?
+                                  data.usersList.map(user => (
+                                  <TouchableOpacity key={user.id} style={styles.touchableOpacity} onPress={this.onPushPage.bind(this,{ name: 'TestPageContainer', props: {uid: user.id}})}>
+                                    <Text style={styles.header}>{user.name}</Text>
+                                  </TouchableOpacity>
+                                      //<View key={user.id} >
+                                      //    <Text style={styles.header}>{user.name}</Text>
+                                      //</View>
+                                  )) : <Text style={styles.header}>{'None'}</Text>
+                          : <Text style={styles.header}>{'None data'}</Text>
 
-              <Button
-                  onPress={this.onButtonPress.bind(this)}
-                  title="Ok!"
-                  color="#841584"
-                  accessibilityLabel="Ok!"
-              />
-
-            { data ? data.loading ? <Text style={styles.header}>{'Loading'}</Text>
-                :
-                data.usersList ?
-                data.usersList.map(user => (
-                    <View key={user.id} >
-                            <Text style={styles.header}>{user.name}</Text>
-                    </View>
-                )) : <Text style={styles.header}>{'None'}</Text>
-                : <Text style={styles.header}>{'None data'}</Text>
-
-            }
+                      }
+                  </ScrollView>
+              </View>
           </View>
         )
     }
@@ -457,9 +485,6 @@ const styles = {
     },
 
     bodyView: {
-        marginTop: 7,
-        borderTopWidth: 1,
-        borderTopColor: 'lightgray',
         flex: 1
     },
     upperView: {
@@ -557,9 +582,10 @@ const styles = {
     touchableOpacity: {
         flex: 1,
         flexDirection: 'row',
-        alignSelf: 'stretch',
+        alignSelf: 'center',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        overflow: 'hidden',
     },
     questionText: {
         color: '#CCC',

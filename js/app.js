@@ -22,7 +22,8 @@ import MainContainer from './containers/MainContainer'
 import IntroNavContainer from './containers/IntroNavContainer'
 
 import CustomNavigationCardStack from './components/CustomNavigationCardStack'
-
+import gql from 'graphql-tag';
+import apolloClient from  './apolloConfig'
 global._ = _;
 
 const NavigationCardStackStyleInterpolator = require('NavigationCardStackStyleInterpolator');
@@ -107,12 +108,23 @@ class App extends React.Component {
                     <Login signUp completeNavigationState={completeNavigationState} parentNavigator={this.navigator}/>);
             case 'TestPageContainer':
                 return (
-                    <TestPageContainer signUp completeNavigationState={completeNavigationState} parentNavigator={this.navigator}/>);
+                    <TestPageContainer {... route.props} signUp completeNavigationState={completeNavigationState} parentNavigator={this.navigator}/>);
         }
     }
 
     componentDidMount() {
-
+   //      apolloClient.query({ query: gql`
+   //        query allUsers {
+   //          usersList {
+   //            id,
+   //            name,
+   //            friends {
+   //              id,
+   //              name
+   //            }
+   //          }
+   //        }
+   // ` });
     }
 
 

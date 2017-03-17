@@ -190,7 +190,19 @@ export default class TestPage extends Component {
           </View>
         )
     }
-
+    renderUserFriends(user) {
+        const userName = user.name ? <Text style={styles.header}>{user.name}</Text> : <Text style={styles.header}>{'None name user'}</Text> ;
+        const userFriends = user.friends.map(user => (
+            <View key={user.id} style={styles.touchableOpacity} >
+                <Text style={styles.header}>{user.name}</Text>
+            </View>));
+        return (
+            <View>
+                { userName }
+                { userFriends }
+            </View>
+        )
+    }
     render() {
         let { signUp } = this.state
         let actionText = 'Sign in';
@@ -201,31 +213,29 @@ export default class TestPage extends Component {
             toggleText = 'SIGN IN'
             questionText = 'Already have an account? '
         }
-           console.log('~~~ testPage render', this.props.data);
+        const { data } = this.props;
+        console.log('~~~ data',data);
         return (
             <View style={styles.view}>
-                <NavigationBar leftButton={this._leftButton()} title={this._title()} style={styles.navBar}/>
+                <NavigationBar
+                                statusBar={{tintColor: '#1f1b20', style: 'light-content'}}
+                                leftButton={this._leftButton()}
+                                title={this._title()}
+                                style={styles.navBar}/>
                 <View style={styles.bodyView}>
                     <ScrollView ref='scrollView' style={styles.scrollView} contentContainerStyle={{paddingBottom: 125}}>
                         <View style={styles.upperView}>
-                            <Text>dsfsdf</Text>
-                            <View style={styles.descriptionView}>
-                                <View style={[styles.lineView, {marginLeft:20, marginRight:20}]}></View>
-                                <Text style={styles.actionText}>{actionText} with e-mail</Text>
-                                <View style={[styles.lineView, {marginRight:20, marginLeft:20}]}></View>
-                            </View>
+                            { data ? data.loading ? <Text style={styles.header}>{'Loading'}</Text>
+                                    :
+                                    data.user ? this.renderUserFriends(data.user) : <Text style={styles.header}>{'None User'}</Text>
+                                : <Text style={styles.header}>{'None data'}</Text>
 
-                            {this._renderEmailSignupLogin.bind(this)(signUp)}
+                            }
+                            {
+                               // this._renderEmailSignupLogin.bind(this)(signUp)
+                            }
                         </View>
                     </ScrollView>
-                    <View style={styles.buttonView}>
-                        <View style={styles.buttonSignUp}>
-                            <TouchableOpacity style={styles.touchableOpacity} onPress={this._onPressToggle.bind(this)}>
-                                <Text style={styles.questionText}>{questionText}</Text>
-                                <Text style={styles.buttonText}>{toggleText}</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
                     {
                         // <ClapitLoading />
                     }
@@ -240,7 +250,8 @@ export default class TestPage extends Component {
 
     _leftButton() {
         return (
-            <BackButton onPress={this._onPressBack.bind(this)}/>
+            // <BackButton onPress={this._onPressBack.bind(this)}/>
+            <BackButton text={'Back'} onPress={this._onPressBack.bind(this)} />
         )
     }
 
@@ -248,7 +259,7 @@ export default class TestPage extends Component {
         let { signUp } = this.state
         let title = 'SIGN IN'
         if (signUp) {
-            title = 'SIGN UP'
+            title = 'User Info'
         }
 
         return (
@@ -269,17 +280,16 @@ export default class TestPage extends Component {
 }
 
 const styles = StyleSheet.create({
+    header: { fontSize: 20, color:'#fff' },
     view: {
         flex: 1,
-        backgroundColor: 'white'
+        //backgroundColor: 'white'
+        backgroundColor: 'black',
     },
     navBar: {
-        backgroundColor: 'white'
+        backgroundColor: '#1f1b20'
     },
     bodyView: {
-        marginTop: 7,
-        borderTopWidth: 1,
-        borderTopColor: 'lightgray',
         flex: 1
     },
     upperView: {

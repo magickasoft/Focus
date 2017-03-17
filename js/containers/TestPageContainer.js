@@ -8,7 +8,10 @@ import * as drawerActions from '../actions/drawer'
 import * as navigationActions  from '../actions/navigation'
 
 const TestPageWithQuery =  graphql(getUserById, {
-    options: ({ uid }) => ({ variables: { uid: uid ? uid : '559645cd1a38532d14349242'} }),
+    options: ({ uid }) => {
+        // console.log('~~~ option',uid);
+        return { variables: { uid: uid ? uid : ''} }
+    },
 })(TestPage);
 
 function stateToProps(state) {

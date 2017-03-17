@@ -12,7 +12,7 @@ const ControlPanelbWithQuery =  graphql(hello)(ControlPanel);
 
 function stateToProps(state) {
     const { navigationState, drawer } = state;
-    return { navigationState, drawer};
+    return { navigationState, drawer };
 }
 
 function dispatchToProps(dispatch) {
