@@ -14,7 +14,6 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 
 import * as navigationActions  from './actions/navigation'
-import * as netinfoActions  from './actions/netinfo'
 import { graphql } from 'react-apollo'
 import { allUsers } from './queries/index'
 
@@ -114,20 +113,20 @@ class App extends React.Component {
         }
     }
     _handleConnectionInfoChange = (connectionInfo) => {
-      const { setNetInfoStatus } = this.props;
-      setNetInfoStatus(connectionInfo);
+      // const { setNetInfoStatus } = this.props;
+      // setNetInfoStatus(connectionInfo);
     };
     componentWillUnmount() {
-      NetInfo.removeEventListener(
-        'change',
-        this._handleConnectionInfoChange
-      );
+      // NetInfo.removeEventListener(
+      //   'change',
+      //   this._handleConnectionInfoChange
+      // );
     }
     componentDidMount() {
-      NetInfo.addEventListener(
-        'change',
-        this._handleConnectionInfoChange
-      );
+      // NetInfo.addEventListener(
+      //   'change',
+      //   this._handleConnectionInfoChange
+      // );
 
    //      apolloClient.query({ query: gql`
    //        query allUsers {
@@ -177,7 +176,7 @@ const stateToProps = (state) => {
 };
 
 const dispatchToProps = (dispatch) => {
-    return bindActionCreators(_.extend({}, {...navigationActions, ...netinfoActions}), dispatch)
+    return bindActionCreators(_.extend({}, {...navigationActions}), dispatch)
 };
 
 export default connect(stateToProps, dispatchToProps)(App)

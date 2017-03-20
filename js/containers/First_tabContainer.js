@@ -1,6 +1,7 @@
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { graphql, compose } from 'react-apollo'
+
 import First_tab from '../components/Feed/FeedItem'
 import { allUsers } from '../queries/index'
 
@@ -14,6 +15,7 @@ const First_tabWithQuery =  graphql(allUsers, {
 })(First_tab);
 
 function stateToProps(state) {
+
     const { clapitAccountData, navigationState, drawer } = state;
     return { clapitAccountData, navigationState, drawer };
     //let { feed, clapitAccountData, friends, navigationState, drawer } = state
