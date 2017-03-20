@@ -54,10 +54,6 @@ class wrapper extends React.Component {
         );
     }
     render() {
-        const {online} = this.state;
-        if (!online) {
-            return '...';
-        }
 
       return (
         <ApolloProvider store={store} client={apolloClient}>
@@ -67,4 +63,4 @@ class wrapper extends React.Component {
     }
 }
 
-export default wrapper
+export default wrapper;

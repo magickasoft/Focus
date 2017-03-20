@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { graphql, compose } from 'react-apollo'
 
 import First_tab from '../components/Feed/FeedItem'
+import { offlineHOC } from '../offlineHOC'
 import { allUsers } from '../queries/index'
 
 import * as drawerActions from '../actions/drawer'
@@ -13,6 +14,9 @@ const First_tabWithQuery =  graphql(allUsers, {
       //fetchPolicy: 'cache-and-network',
     }
 })(First_tab);
+
+const  hookWrap = offlineHOC(allUsers,'two')(First_tab);
+// const  hookWrap = offlineHOC(First_tab);
 
 function stateToProps(state) {
 
@@ -29,4 +33,4 @@ function dispatchToProps(dispatch) {
     return bindActionCreators(actions, dispatch)
 }
 
-export default connect(stateToProps, dispatchToProps)(First_tabWithQuery)
+export default connect(stateToProps, dispatchToProps)(hookWrap)
