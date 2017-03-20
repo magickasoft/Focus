@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import  {
+    NetInfo,
     View,
     Text,
     NativeModules,
@@ -36,7 +37,7 @@ class App extends React.Component {
 
         let { navigationPush, navigationPop, navigationReplace } = props;
         this.state = {
-            permissionsRequested:false
+            permissionsRequested: false,
         };
 
         // for time's sake, converting from navigator.push to navigationPush

@@ -1,6 +1,11 @@
 'use strict'
-import React from 'react';
-import { AppRegistry, AsyncStorage, Platform } from 'react-native'
+import React, { Component } from 'react';
+import {
+    AppRegistry,
+    AsyncStorage,
+    Platform,
+    NetInfo,
+} from 'react-native'
 import { applyMiddleware, createStore, combineReducers,  compose } from 'redux'
 import { composeWithDevTools } from 'remote-redux-devtools'
 import { persistStore, autoRehydrate } from 'redux-persist'
@@ -10,16 +15,10 @@ import { ApolloProvider } from 'react-apollo';
 import createLogger from 'redux-logger'
 import thunk from 'redux-thunk'
 import rootReducer from './js/reducers'
-// import * as rootReducer from './js/reducers'
 import App from './js/app'
 
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-
-import { autoRehydrated } from './js/reducers/persist'
-import { clapitAccountData } from './js/reducers/clapit'
-import { drawer } from './js/reducers/drawer'
-import { navigationState } from './js/reducers/navigation'
 
 import apolloClient from  './js/apolloConfig'
 
@@ -35,8 +34,6 @@ import apolloClient from  './js/apolloConfig'
 //     }
 //   }
 // ` });
-const wrapper = (props) => {
-    //console.log('~~wrapper props', props);
 
     let middlewareApplied;
     const logger = createLogger();
@@ -50,22 +47,53 @@ const wrapper = (props) => {
     });
 
     const store = createStore(rootReducer, // {},
-    //compose(
-    composeEnhancers(
-      autoRehydrate(),
-      middlewareApplied,
-      (typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined') ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
-    ));
+        compose(
+            // composeEnhancers(
+            autoRehydrate(),
+            middlewareApplied,
+            (typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined') ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f,
+        ));
     persistStore(store, {
-      storage: AsyncStorage,
-      whitelist: [/*'apollo'*/,'autoRehydrated','clapitAccountData','drawer', /*'navigationState',*/ 'newNotifications', 'preferences',]
+        storage: AsyncStorage,
+        whitelist: ['apollo','autoRehydrated','clapitAccountData','drawer', /*'navigationState',*/ 'newNotifications', 'preferences',]
     }).purge([]);
 
-    return (
-        <ApolloProvider store={store} client={apolloClient}>
-          <App />
-        </ApolloProvider>
-    )
-};
+class wrapper extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          connectionInfo: '',
+        };
+    }
+    _handleConnectionInfoChange = (connectionInfo) => {
+
+        this.setState({
+          connectionInfo,
+        });
+    };
+    componentWillUnmount() {
+        NetInfo.removeEventListener(
+            'change',
+            this._handleConnectionInfoChange
+        );
+    }
+    componentDidMount() {
+        NetInfo.addEventListener(
+            'change',
+            this._handleConnectionInfoChange
+        );
+    }
+    render() {
+        console.log('~~~~ app inetconnect', this.state.connectionInfo);
+
+
+        return (
+
+            <ApolloProvider store={store} client={apolloClient}>
+                <App />
+            </ApolloProvider>
+        )
+    }
+}
 
 export default wrapper

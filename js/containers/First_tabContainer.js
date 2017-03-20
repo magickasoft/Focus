@@ -1,13 +1,17 @@
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { graphql } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
 import First_tab from '../components/Feed/FeedItem'
 import { allUsers } from '../queries/index'
 
 import * as drawerActions from '../actions/drawer'
 import * as navigationActions  from '../actions/navigation'
 
-const First_tabWithQuery =  graphql(allUsers)(First_tab);
+const First_tabWithQuery =  graphql(allUsers, {
+    options: {
+      //fetchPolicy: 'cache-and-network',
+    }
+})(First_tab);
 
 function stateToProps(state) {
     const { clapitAccountData, navigationState, drawer } = state;
