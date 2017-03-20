@@ -14,6 +14,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 
 import * as navigationActions  from './actions/navigation'
+import * as netinfoActions  from './actions/netinfo'
 import { graphql } from 'react-apollo'
 import { allUsers } from './queries/index'
 
@@ -112,8 +113,22 @@ class App extends React.Component {
                     <TestPageContainer {... route.props} signUp completeNavigationState={completeNavigationState} parentNavigator={this.navigator}/>);
         }
     }
-
+    _handleConnectionInfoChange = (connectionInfo) => {
+      const { setNetInfoStatus } = this.props;
+      setNetInfoStatus(connectionInfo);
+    };
+    componentWillUnmount() {
+      NetInfo.removeEventListener(
+        'change',
+        this._handleConnectionInfoChange
+      );
+    }
     componentDidMount() {
+      NetInfo.addEventListener(
+        'change',
+        this._handleConnectionInfoChange
+      );
+
    //      apolloClient.query({ query: gql`
    //        query allUsers {
    //          usersList {
@@ -142,6 +157,7 @@ class App extends React.Component {
         if (!autoRehydrated) {
             return (<View></View>)
         }
+        console.log('~~~~App props', this.props);
         return (
             <CustomNavigationCardStack
                 navigationState={navigationState}
@@ -155,13 +171,13 @@ class App extends React.Component {
 }
 
 const stateToProps = (state) => {
-    let { autoRehydrated, navigationState } = state;
+    let { autoRehydrated, navigationState, netinfo } = state;
 
-    return { autoRehydrated, navigationState };
+    return { autoRehydrated, navigationState, netinfo };
 };
 
 const dispatchToProps = (dispatch) => {
-    return bindActionCreators(_.extend({}, {...navigationActions}), dispatch)
+    return bindActionCreators(_.extend({}, {...navigationActions, ...netinfoActions}), dispatch)
 };
 
 export default connect(stateToProps, dispatchToProps)(App)

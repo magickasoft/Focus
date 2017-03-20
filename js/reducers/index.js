@@ -5,6 +5,7 @@ import apolloClient from  '../../js/apolloConfig'
 import { autoRehydrated } from './persist'
 import { clapitAccountData } from './clapit'
 import { drawer } from './drawer'
+import { netinfo } from './netinfo'
 import { navigationState } from './navigation'
 
 
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
     autoRehydrated,
     clapitAccountData,
     drawer,
+    netinfo,
     navigationState,
 });
 

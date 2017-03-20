@@ -1,3 +1,6 @@
+// NetInfo
+export const NETINFO_SET_STATUS = 'NETINFO_SET_STATUS'
+
 // Drawer
 export const DRAWER_DATA_SET = 'DRAWER_DATA_SET'
 export const DRAWER_OPEN = 'DRAWER_OPEN'
