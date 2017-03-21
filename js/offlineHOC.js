@@ -14,19 +14,17 @@ import apolloClient from  './apolloConfig'
 import store from  './storeConfig'
 
 function offlineHOC(...params) {
-    console.log('~~~ offlineHOC params', params[0]);
+    //console.log('~~~ offlineHOC params', params[0]);
     return function offlineFilterWrapper( WrappedComponent ) {
 
         class offlineFilter extends Component {
             constructor(props) {
                 super(props);
                 this.state = {
-                    online: false,
                 };
             }
-            determineConnect(type) {
-                let isOffline;
-                switch (types) {
+            determineConnect = (type) => {
+                switch (type) {
                     case 'wifi':
                     case 'cell':
                     case 'BLUETOOTH':
@@ -40,44 +38,42 @@ function offlineHOC(...params) {
                     case 'VPN':
                     case 'WIFI':
                     case 'WIMAX':
-                        isOffline = false;
-                        break;
+                        return false;
                     case 'UNKNOWN':
                     case 'NONE':
                     case 'unknown':
                     case 'none':
+                        return true;
+                        break;
                     default:
-                        isOffline = true;
+                        return true;
                 }
-                this.setState({ online: !isOffline });
-                Status = !isOffline;
-            }
-            componentDidMount() {
-                const { netinfo } = this.props;
-                this.determineConnect.bind(this,netinfo.type);
             }
             render() {
-                const { online } = this.state;
+                const { netinfo } = this.props;
                 let toRender;
-                console.log('~~~ online',online);
-                if (online) {
+                console.log('~~~ isOffline', netinfo);
+                if (!this.determineConnect(netinfo.type)) {
+                    console.log('~~~~~~ online');
                     toRender =  (
                         <WrappedComponent {...this.props}/>
                     );
 
                 }else {
+                    console.log('~~~~~~ offline');
+                       // метод не гуд
                     const data = apolloClient.readQuery({
                         query: params[0],
+                        variables: params[1],
                     });
+                    console.log('~~~~~~????', data);
                     toRender = data ? (
                             <WrappedComponent {...this.props}/>
                         ) : (
                             <View><Text>нет данных</Text></View>
                         );
-                    console.log('~~~ data apolloClient.readQuery',data);
-                }
 
-                console.log('~~~ toRender',toRender);
+                }
                 return (
                     <View style={{flex:1}}>
                         {toRender}
@@ -97,7 +93,7 @@ function offlineHOC(...params) {
             return bindActionCreators(actions, dispatch)
         }
 
-        if (params.length === 1) {
+        if (params.length > 0 && params.length <= 2) {
             return connect(mapStateToProps, mapDispatchToProps)(offlineFilter);
         }else {
             return (WrappedComponent);
