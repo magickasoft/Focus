@@ -9,12 +9,10 @@ import { allUsers } from '../queries/index'
 import * as drawerActions from '../actions/drawer'
 import * as navigationActions  from '../actions/navigation'
 
-const First_tabWithQuery =  graphql(allUsers, {
+const  First_tabOfflineHOC = offlineHOC( allUsers, {
     options: {
-      //fetchPolicy: 'cache-and-network',
-    }
-})(First_tab);
-const  First_tabOfflineHOC = offlineHOC(allUsers)(First_tabWithQuery);
+    //fetchPolicy: 'cache-and-network',
+}})(First_tab);
 
 function stateToProps(state) {
 

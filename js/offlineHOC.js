@@ -7,15 +7,26 @@ import React, { Component  } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo'
+import get from 'lodash/get';
 
 import * as netinfoActions  from './actions/netinfo'
 
 import apolloClient from  './apolloConfig'
 import store from  './storeConfig'
 
-function offlineHOC(...params) {
+function offlineHOC(query, queryOptions ) {
+
+    const options = get(queryOptions, 'options', null);
     //console.log('~~~ offlineHOC params', params[0]);
-    return function offlineFilterWrapper( WrappedComponent ) {
+    let getVariablesFunction = () => {get(options, 'variables', {})};
+    if (options !== null) {
+        if (typeof options === 'function') {
+            getVariablesFunction = (props) => get(options(props), 'variables', {});
+        }
+    }
+
+
+    return function offlineFilterWrapper( WrappedComponentWithoutQuery ) {
 
         class offlineFilter extends Component {
             constructor(props) {
@@ -38,40 +49,50 @@ function offlineHOC(...params) {
                     case 'VPN':
                     case 'WIFI':
                     case 'WIMAX':
-                        return false;
+                        return true;
                     case 'UNKNOWN':
                     case 'NONE':
                     case 'unknown':
                     case 'none':
-                        return true;
+                        return false;
                         break;
                     default:
-                        return true;
+                        return false;
                 }
-            }
+            };
+
             render() {
                 const { netinfo } = this.props;
+                console.log('~~~~~~ HOC props', this.props);
                 let toRender;
                 console.log('~~~ isOffline', netinfo);
-                if (!this.determineConnect(netinfo.type)) {
+
+
+                if (this.determineConnect(netinfo.type)) {
                     console.log('~~~~~~ online');
+                    const WrappedComponentGraphQl = graphql(query, queryOptions)(WrappedComponentWithoutQuery);
                     toRender =  (
-                        <WrappedComponent {...this.props}/>
+                        <WrappedComponentGraphQl {...this.props}/>
                     );
 
                 }else {
                     console.log('~~~~~~ offline');
-                       // метод не гуд
-                    const data = apolloClient.readQuery({
-                        query: params[0],
-                        variables: params[1],
-                    });
-                    console.log('~~~~~~????', data);
-                    toRender = data ? (
-                            <WrappedComponent {...this.props}/>
-                        ) : (
-                            <View><Text>нет данных</Text></View>
-                        );
+
+                    try {
+                        const data = apolloClient.readQuery({
+                            query: query,
+                            variables: getVariablesFunction(this.props),
+                        });
+                        toRender = data ? (
+                                // <WrappedComponent {...this.props}/>
+                                <WrappedComponentWithoutQuery data={data} {...this.props} />
+                            ) : (
+                                <View><Text>нет данных</Text></View>
+                            );
+
+                    }catch (e) {
+                        toRender = <View><Text>нет данных</Text></View>;
+                    }
 
                 }
                 return (
@@ -93,11 +114,7 @@ function offlineHOC(...params) {
             return bindActionCreators(actions, dispatch)
         }
 
-        if (params.length > 0 && params.length <= 2) {
-            return connect(mapStateToProps, mapDispatchToProps)(offlineFilter);
-        }else {
-            return (WrappedComponent);
-        }
+        return connect(mapStateToProps, mapDispatchToProps)(offlineFilter);
 
 
     }
