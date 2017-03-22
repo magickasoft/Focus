@@ -29,6 +29,21 @@ export const getUserById = gql`
     }
   }
 `;
+export const getUserByIdAllFields = gql`
+  query getUserById($uid: String!) {
+    user(id: $uid) {
+      id
+      name
+      descript
+      friends {
+        id
+        name
+        descript
+      }
+    }
+  }
+`;
+
 export const hello = gql`
   query hello {
     hello

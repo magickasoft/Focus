@@ -19,6 +19,7 @@ import { allUsers } from './queries/index'
 
 import Login from './components/IntroNav/Login'
 import TestPageContainer from './containers/TestPageContainer'
+import SubTestPageContainer from './containers/SubTestPageContainer'
 import MainContainer from './containers/MainContainer'
 import IntroNavContainer from './containers/IntroNavContainer'
 
@@ -110,6 +111,9 @@ class App extends React.Component {
             case 'TestPageContainer':
                 return (
                     <TestPageContainer {... route.props} signUp completeNavigationState={completeNavigationState} parentNavigator={this.navigator}/>);
+            case 'SubTestPageContainer':
+                return (
+                    <SubTestPageContainer {... route.props} signUp completeNavigationState={completeNavigationState} parentNavigator={this.navigator}/>);
         }
     }
     _handleConnectionInfoChange = (connectionInfo) => {

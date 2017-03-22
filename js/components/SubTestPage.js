@@ -9,8 +9,7 @@ import  {
     Alert,
     NativeModules,
     Dimensions,
-    Keyboard,
-    Button,
+    Keyboard
 } from 'react-native'
 import _ from 'lodash'
 import NavigationBar from 'react-native-navbar'
@@ -21,10 +20,9 @@ import NavTitle from './IntroNav/NavTitle'
 
 const emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-export default class TestPage extends Component {
+export default class SubTestPage extends Component {
     constructor(props) {
-        super(props);
-        const { navigationPush, navigationPop, navigationReplace } = props;
+        super(props)
         this.state = {
             email:'',
             password:'',
@@ -33,22 +31,7 @@ export default class TestPage extends Component {
             keyboardOpen: false,
             signUp: props.signUp
         }
-        // for time's sake, converting from navigator.push to navigationPush
-        this.navigator = {
-            push: (data, staticState = false) => {
-                const { name, ...otherData } = data;
-                const key = name + (staticState ? '' : ('-' + new Date().getTime()));
-                navigationPush({ key, name, ...otherData })
-            },
-            pop: () => {
-                navigationPop()
-            },
-            replace: (data, staticState = false) => {
-                let { name, ...otherData } = data;
-                const key = name + (staticState ? '' : ('-' + new Date().getTime()));
-                navigationReplace({ key, ...otherData })
-            }
-        }
+
         this._keyboardWillShow = this._keyboardWillShow.bind(this)
         this._keyboardWillHide = this._keyboardWillHide.bind(this)
 
@@ -220,10 +203,6 @@ export default class TestPage extends Component {
             </View>
         )
     }
-    onPushPage (object) {
-
-        this.navigator.push(object, true);
-    }
     render() {
         let { signUp } = this.state
         let actionText = 'Sign in';
@@ -244,13 +223,7 @@ export default class TestPage extends Component {
                                 title={this._title()}
                                 style={styles.navBar}/>
                 <View style={styles.bodyView}>
-                    <ScrollView ref='scrollView' style={styles.scrollView} contentContainerStyle={{paddingBottom: 15}}>
-                        <Button
-                            onPress={this.onPushPage.bind(this,{ name: 'SubTestPageContainer', props: {uid: '559645cd1a38532d14349241'}})}
-                            title="next query"
-                            color="#841584"
-                            accessibilityLabel="next query"
-                        />
+                    <ScrollView ref='scrollView' style={styles.scrollView} contentContainerStyle={{paddingBottom: 125}}>
                         <View style={styles.upperView}>
                             { data ? data.loading ? <Text style={styles.header}>{'Loading'}</Text>
                                     :
