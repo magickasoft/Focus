@@ -17,14 +17,12 @@ import store from  './storeConfig'
 function offlineHOC(query, queryOptions ) {
 
     const options = get(queryOptions, 'options', null);
-    //console.log('~~~ offlineHOC params', params[0]);
     let getVariablesFunction = () => {get(options, 'variables', {})};
     if (options !== null) {
         if (typeof options === 'function') {
             getVariablesFunction = (props) => get(options(props), 'variables', {});
         }
     }
-
 
     return function offlineFilterWrapper( WrappedComponentWithoutQuery ) {
 
@@ -105,6 +103,7 @@ function offlineHOC(query, queryOptions ) {
         }
 
         function mapStateToProps(state) {
+
             const { navigationState, drawer, netinfo } = state;
             return { navigationState, drawer, netinfo };
         }
@@ -115,8 +114,6 @@ function offlineHOC(query, queryOptions ) {
         }
 
         return connect(mapStateToProps, mapDispatchToProps)(offlineFilter);
-
-
     }
 
 }

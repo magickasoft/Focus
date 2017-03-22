@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 import React, { Component } from 'react';
 import {
     AppRegistry,
@@ -8,10 +8,10 @@ import {
 import { Provider } from 'react-redux'
 import { ApolloProvider } from 'react-apollo';
 
-import App from './js/app'
-
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+
+import App from './js/app'
 
 import apolloClient from  './js/apolloConfig'
 import store from  './js/storeConfig'
@@ -34,24 +34,25 @@ import * as netinfoActions  from './js/actions/netinfo'
 class wrapper extends React.Component {
     constructor(props) {
       super(props);
-
-      this.state = {online: false};
+      this.state = {
+      };
     }
     _handleConnectionInfoChange = (connectionInfo) => {
-        this.setState({online: true});
         store.dispatch(netinfoActions.setNetInfoStatus(connectionInfo));
     };
     componentWillUnmount() {
-        NetInfo.removeEventListener(
-            'change',
-            this._handleConnectionInfoChange
-        );
+
+      NetInfo.removeEventListener(
+        'change',
+        this._handleConnectionInfoChange
+      );
     }
     componentDidMount() {
-        NetInfo.addEventListener(
-            'change',
-            this._handleConnectionInfoChange
-        );
+
+      NetInfo.addEventListener(
+        'change',
+        this._handleConnectionInfoChange
+      );
     }
     render() {
 
