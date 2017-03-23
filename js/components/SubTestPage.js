@@ -192,14 +192,13 @@ export default class SubTestPage extends Component {
     }
     renderUserFriends(user) {
         const userName = user.name ? <Text style={styles.header}>{user.name}</Text> : <Text style={styles.header}>{'None name user'}</Text> ;
-        const userFriends = user.friends.map(user => (
-            <View key={user.id} style={styles.touchableOpacity} >
-                <Text style={styles.header}>{user.name}</Text>
-            </View>));
+        const userFirstname = user.firstname ? <Text style={styles.header}>{user.firstname}</Text> : <Text style={styles.header}>{'None name user'}</Text> ;
+        const userLastname = user.lastname ? <Text style={styles.header}>{user.lastname}</Text> : <Text style={styles.header}>{'None name user'}</Text> ;
         return (
             <View>
                 { userName }
-                { userFriends }
+                { userFirstname }
+                { userLastname }
             </View>
         )
     }

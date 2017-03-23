@@ -451,8 +451,8 @@ class FeedItem extends React.Component {
                       />
                       { data ? data.loading ? <Text style={styles.header}>{'Loading'}</Text>
                               :
-                              data.usersList ?
-                                  data.usersList.map(user => (
+                              data.users ?
+                                  data.users.map(user => (
                                   <TouchableOpacity key={user.id} style={styles.touchableOpacity} onPress={this.onPushPage.bind(this,{ name: 'TestPageContainer', props: {uid: user.id}})}>
                                     <Text style={styles.header}>{user.name}</Text>
                                   </TouchableOpacity>

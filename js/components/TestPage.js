@@ -207,16 +207,12 @@ export default class TestPage extends Component {
           </View>
         )
     }
-    renderUserFriends(user) {
+    renderUserInfo(user) {
         const userName = user.name ? <Text style={styles.header}>{user.name}</Text> : <Text style={styles.header}>{'None name user'}</Text> ;
-        const userFriends = user.friends.map(user => (
-            <View key={user.id} style={styles.touchableOpacity} >
-                <Text style={styles.header}>{user.name}</Text>
-            </View>));
+
         return (
             <View>
                 { userName }
-                { userFriends }
             </View>
         )
     }
@@ -246,7 +242,7 @@ export default class TestPage extends Component {
                 <View style={styles.bodyView}>
                     <ScrollView ref='scrollView' style={styles.scrollView} contentContainerStyle={{paddingBottom: 15}}>
                         <Button
-                            onPress={this.onPushPage.bind(this,{ name: 'SubTestPageContainer', props: {uid: '559645cd1a38532d14349242'}})}
+                            onPress={this.onPushPage.bind(this,{ name: 'SubTestPageContainer', props: {uid: 1}})}
                             title="next query"
                             color="#841584"
                             accessibilityLabel="next query"
@@ -254,7 +250,7 @@ export default class TestPage extends Component {
                         <View style={styles.upperView}>
                             { data ? data.loading ? <Text style={styles.header}>{'Loading'}</Text>
                                     :
-                                    data.user ? this.renderUserFriends(data.user) : <Text style={styles.header}>{'None User'}</Text>
+                                    data.user ? this.renderUserInfo(data.user) : <Text style={styles.header}>{'None User'}</Text>
                                 : <Text style={styles.header}>{'None data'}</Text>
 
                             }
@@ -296,7 +292,7 @@ export default class TestPage extends Component {
 
     _onPressBack() {
         let { navigator, parentNavigator, parentPop } = this.props
-        console.log('~~~~~~~Login', this.props);
+
         parentNavigator.pop();
         // navigator.pop()
         // if (parentPop){

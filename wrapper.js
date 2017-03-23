@@ -18,18 +18,6 @@ import store from  './js/storeConfig'
 
 import * as netinfoActions  from './js/actions/netinfo'
 
-//     apolloClient.query({ query: gql`
-//   query allUsers {
-//     usersList {
-//       id,
-//       name,
-//       friends {
-//         id,
-//         name
-//       }
-//     }
-//   }
-// ` });
 
 class wrapper extends React.Component {
     constructor(props) {

@@ -116,34 +116,11 @@ class App extends React.Component {
                     <SubTestPageContainer {... route.props} signUp completeNavigationState={completeNavigationState} parentNavigator={this.navigator}/>);
         }
     }
-    _handleConnectionInfoChange = (connectionInfo) => {
-      // const { setNetInfoStatus } = this.props;
-      // setNetInfoStatus(connectionInfo);
-    };
     componentWillUnmount() {
-      // NetInfo.removeEventListener(
-      //   'change',
-      //   this._handleConnectionInfoChange
-      // );
+
     }
     componentDidMount() {
-      // NetInfo.addEventListener(
-      //   'change',
-      //   this._handleConnectionInfoChange
-      // );
-
-   //      apolloClient.query({ query: gql`
-   //        query allUsers {
-   //          usersList {
-   //            id,
-   //            name,
-   //            friends {
-   //              id,
-   //              name
-   //            }
-   //          }
-   //        }
-   // ` });
+      // apolloClient.query({ query: allUsers});
     }
 
 
