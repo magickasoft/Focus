@@ -406,7 +406,9 @@ class FeedItem extends React.Component {
     onButtonPress () {
         const { data } = this.props;
         console.log('~~~~~ onButtonPress FreedItem', this.props);
+        //apolloClient.resetStore();
         data.refetch();
+
         // apolloClient.query({
         //     query: allUsers,
         //     variables: {},

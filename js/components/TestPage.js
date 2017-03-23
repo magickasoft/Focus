@@ -246,7 +246,7 @@ export default class TestPage extends Component {
                 <View style={styles.bodyView}>
                     <ScrollView ref='scrollView' style={styles.scrollView} contentContainerStyle={{paddingBottom: 15}}>
                         <Button
-                            onPress={this.onPushPage.bind(this,{ name: 'SubTestPageContainer', props: {uid: '559645cd1a38532d14349241'}})}
+                            onPress={this.onPushPage.bind(this,{ name: 'SubTestPageContainer', props: {uid: '559645cd1a38532d14349242'}})}
                             title="next query"
                             color="#841584"
                             accessibilityLabel="next query"
