@@ -6,48 +6,37 @@ import gql from 'graphql-tag'
 
 export const allUsers = gql`
   query allUsers {
-    usersList {
-      id,
-      name,
-      friends {
-        id,
-        name
-      }
+    users {
+      uid
+      fullname
     }
-    hello
   }
 `;
 export const getUserById = gql`
-  query getUserById($uid: String!) {
-    user(id: $uid) {
-      id
-      name
-      friends {
-        id
-        name
-      }
+  query getUserByUid($uid: Int!) {
+    user(uid: $uid) {
+      uid
+      name      
     }
   }
 `;
 export const getUserByIdAllFields = gql`
-  query getUserById($uid: String!) {
-    user(id: $uid) {
-      id
+  query getUserByUid($uid: Int!) {
+    user(uid: $uid) {
+      uid
       name
-      descript
-      friends {
-        id
+      firstname
+      lastname
+      position
+      phones
+      city {
+        tid
         name
-        descript
+        fias_aoguid
       }
+      mail
     }
   }
 `;
 
-export const hello = gql`
-  query hello {
-    hello
 
-  }
-  
-`;

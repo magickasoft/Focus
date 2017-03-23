@@ -4,7 +4,7 @@ import { graphql, compose } from 'react-apollo'
 
 import SubTestPage from '../components/SubTestPage'
 import offlineHOC from '../offlineHOC'
-import { getUserByIdAllFields, allUsers} from '../queries/index'
+import { getUserByIdAllFields} from '../queries/index'
 
 import * as drawerActions from '../actions/drawer'
 import * as navigationActions  from '../actions/navigation'
